@@ -1,0 +1,60 @@
+﻿@page "/"
+
+<h1>Demo</h1>
+
+<button class="btn btn-dark" @onclick="@ToggleEditCompanyForm">Edit Company</button>
+<div hidden="@HideEditCompany">
+    <EditForm Model="@String.Empty" OnValidSubmit="@HandleValidSubmit" hidden="@HideEditCompany">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Company Name:
+            </label>
+            <div class="col-sm-10">
+                <InputText class="form-control" @bind-Value="@UpdatedCompanyName" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Company Description:
+            </label>
+            <div class="col-sm-10">
+                <InputText class="form-control" @bind-Value="@UpdatedCompanyDescription" />
+            </div>
+        </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    </EditForm>
+</div>
+<p>
+    Company Name: @CurrentCompanyName <br />
+    Company Description: @CurrentCompanyDescription <br />
+</p>
+
+
+@code {
+    public bool HideEditCompany { get; set; } = true;
+    public string UpdatedCompanyName { get; set; }
+    public string UpdatedCompanyDescription { get; set; }
+    public string CurrentCompanyName { get; set; }
+    public string CurrentCompanyDescription { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentCompanyName = "Default";
+        CurrentCompanyDescription = "Default Description.";
+        UpdatedCompanyName = CurrentCompanyName;
+        UpdatedCompanyDescription = CurrentCompanyDescription;
+    }
+
+    private void HandleValidSubmit()
+    {
+        CurrentCompanyName = UpdatedCompanyName;
+        CurrentCompanyDescription = UpdatedCompanyDescription;
+        ToggleEditCompanyForm();
+    }
+
+    private void ToggleEditCompanyForm()
+    {
+        HideEditCompany = !HideEditCompany;
+    }
+
+}
